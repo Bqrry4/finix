@@ -164,12 +164,12 @@ in
         task:
         lib.concatStringsSep " " (
           [
+            "-S '${task.schedule.second}'"
+            "-M '${task.schedule.minute}'"
+            "-H '${task.schedule.hour}'"
             "-d '${task.schedule.day}'"
             "-w '${task.schedule.weekday}'"
             "-m '${task.schedule.month}'"
-            "-H '${task.schedule.hour}'"
-            "-M '${task.schedule.minute}'"
-            "-S '${task.schedule.second}'"
             "-D '${task.schedule.day_of_year}'"
             "-W '${task.schedule.week_of_year}'"
             "-s ${task.slack}"
