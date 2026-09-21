@@ -50,7 +50,7 @@ in
                 };
             in
             submodule (
-              { name, ... }:
+              { config, name, ... }:
               {
                 options = {
                   enable = mkOption {
@@ -146,6 +146,12 @@ in
                     '';
                   };
                 };
+                config.timeFile = mkDefault (
+                  if config.user != null then
+                    "/var/cache/snooze/${config.user}_${name}"
+                  else
+                    "/var/cache/snooze/${name}"
+                );
               }
             )
           );
@@ -175,22 +181,24 @@ in
         );
       mkCommand =
         task:
-        # let
-        # touch = lib.getExe' config.programs.coreutils.package "touch";
-        # in
+        let
+          touch = lib.getExe' config.programs.coreutils.package "touch";
+        in
         lib.concatStringsSep " " (
           [
             "${lib.getExe cfg.package}"
             "${mkFlags task}"
-            "--"
+            # "--"
           ]
           ++ (
-            # if task.timeFile == null then
-            [ "${task.command}" ]
-            # else
-            # [
-            # "/bin/sh -c \"${task.command} && ${touch} ${task.timeFile}\""
-            # ]
+            if task.timeFile == null then
+              [ task.command ]
+            else
+              [
+                "/bin/sh"
+                "-c"
+                (lib.escapeShellArg "${task.command} && umask 077 && ${touch} ${task.timeFile}")
+              ]
           )
         );
     in
@@ -199,8 +207,10 @@ in
         cfg.package
       ];
 
+      # To allow for running it as a user.
+      # The folder has open permissions. Each user needs to touch it's own timefile with `umask 077`.
       finit.tmpfiles.rules = [
-        "d /var/cache/snooze 0755"
+        "d /var/cache/snooze 0777"
       ];
 
       finit.services = lib.mapAttrs (name: task: {
@@ -208,7 +218,6 @@ in
         command = mkCommand task;
         respawn = true;
         log = true;
-        exec-stop-post = "${lib.getExe' config.programs.coreutils.package "touch"} ${task.timeFile}";
       }) (lib.filterAttrs (_: task: task.enable) cfg.tasks);
 
       # this module supplies an implementation for `providers.scheduler`
