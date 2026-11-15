@@ -28454,12 +28454,12 @@ and combinations of those: <code>1-10,15/5,28</code>.</p>
     <button type="button" class="copy-link" aria-label="Copy link to this option" title="Copy link to this option"></button>
     <span class="copy-feedback">Link copied!</span>
   </h3>
-  <div class="option-description"><html><head></head><body><p>Path to the timefile location.</p>
+  <div class="option-description"><html><head></head><body><p>Path of the timefile location.</p>
 <p>If <code>timeFile</code> does not exist, it will be assumed outdated enough to ensure earliest execution.</p>
 </body></html></div>
   <dl class="option-details">
-    <dt>Type</dt><dd class="option-value"><code>null or absolute path</code></dd>
-    <dt>Default</dt><dd class="option-value"><html><head></head><body><html><head></head><body><pre class="highlight"><code class="language-nix"><span style="color:rgb(152,195,121);">"</span><span style="color:rgb(152,195,121);">/var/cache/snooze/‹name›</span><span style="color:rgb(152,195,121);">"</span></code></pre></body></html>
+    <dt>Type</dt><dd class="option-value"><code>null or string</code></dd>
+    <dt>Default</dt><dd class="option-value"><html><head></head><body><html><head></head><body><pre class="highlight"><code class="language-nix"><span style="color:rgb(152,195,121);">"</span><span style="color:rgb(152,195,121);">/var/cache/snooze/{name}</span><span style="color:rgb(152,195,121);">"</span><br><span style="color:rgb(171,178,191);">or</span>&nbsp;<span style="color:rgb(171,178,191);">when</span>&nbsp;<span style="color:rgb(171,178,191);">user</span>&nbsp;<span style="color:rgb(171,178,191);">is</span>&nbsp;<span style="color:rgb(171,178,191);">specified</span><span style="color:rgb(132,139,152);">:</span><br><span style="color:rgb(152,195,121);">"</span><span style="color:rgb(152,195,121);">/var/cache/snooze/{user}/{name}</span><span style="color:rgb(152,195,121);">"</span><br></code></pre></body></html>
 </body></html></dd>
   </dl>
   <dl class="option-details option-sources">
